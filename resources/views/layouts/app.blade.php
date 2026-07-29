@@ -1,5 +1,9 @@
+@php
+    $theme = request()->get('theme', 'light');
+    $isDark = $theme === 'dark';
+@endphp
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="{{ request()->get('theme') == 'dark' ? 'dark' : '' }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" @if($isDark) class="dark" @endif>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -226,7 +230,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
-<body class="font-sans antialiased min-h-screen bg-gray-50 dark:bg-gray-900">
+<body class="font-sans antialiased min-h-screen bg-gray-50 {{ $isDark ? 'dark:bg-gray-900' : '' }} text-gray-900 {{ $isDark ? 'dark:text-gray-100' : '' }}">
 
     <!-- ============================================================
          NAVBAR
@@ -253,10 +257,10 @@
                          THEME TOGGLE - PAKAI LINK (PASTI JALAN!)
                          ============================================================ -->
                     <div class="flex gap-1">
-                        <a href="?theme=light" class="px-3 py-1 text-sm rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition {{ request()->get('theme') != 'dark' ? 'ring-2 ring-green-500' : '' }}">
+                        <a href="?theme=light" class="px-3 py-1 text-sm rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition {{ !$isDark ? 'ring-2 ring-green-500' : '' }}">
                             ☀️ Light
                         </a>
-                        <a href="?theme=dark" class="px-3 py-1 text-sm rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition {{ request()->get('theme') == 'dark' ? 'ring-2 ring-green-500' : '' }}">
+                        <a href="?theme=dark" class="px-3 py-1 text-sm rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition {{ $isDark ? 'ring-2 ring-green-500' : '' }}">
                             🌙 Dark
                         </a>
                     </div>
