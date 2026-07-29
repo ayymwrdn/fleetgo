@@ -39,6 +39,12 @@
             @apply bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 antialiased;
         }
 
+        /* ===== DARK MODE ===== */
+        html.dark {
+            background-color: #0A1F16;
+            color: #E8F0EC;
+        }
+
         /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
@@ -307,10 +313,9 @@
     </footer>
 
     <!-- ============================================================
-         SCRIPTS
+         THEME TOGGLE SCRIPT
          ============================================================ -->
     <script>
-        // ===== THEME TOGGLE =====
         document.addEventListener('DOMContentLoaded', function() {
             const themeToggle = document.getElementById('theme-toggle');
             const html = document.documentElement;
