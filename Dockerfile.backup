@@ -1,6 +1,6 @@
 FROM php:8.2-fpm
 
-# Install dependencies (TAMBAHKAN pdo_pgsql)
+# Install dependencies (PASTIKAN pgsql terinstall)
 RUN apt-get update && apt-get install -y \
     git curl libpng-dev libonig-dev libxml2-dev zip unzip libzip-dev libpq-dev \
     && docker-php-ext-install pdo_mysql pdo_pgsql mbstring exif pcntl bcmath gd zip
@@ -13,16 +13,16 @@ WORKDIR /app
 # Copy semua file
 COPY . .
 
-# ✅ BUAT .env DARI .env.example (TAPI KOSONGKAN DB SETTING)
-RUN cp .env.example .env
+# ✅ HAPUS .env.example (biar ga kebaca)
+RUN rm -f .env.example
 
-# ✅ HAPUS KONFIGURASI MYSQL DI .env (biar pake DATABASE_URL)
-RUN sed -i '/^DB_/d' .env
+# ✅ BUAT .env KOSONG (isi nanti dari Render)
+RUN touch .env
 
-# ✅ COMPOSER INSTALL
+# ✅ COMPOSER INSTALL (TANPA DB)
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
-# ✅ KEY GENERATE
+# ✅ GENERATE KEY (pake env dari Render)
 RUN php artisan key:generate
 
 # ✅ OPTIMIZE (TANPA DB CONNECTION)
@@ -32,4 +32,5 @@ RUN php artisan view:cache || true
 
 EXPOSE 8000
 
+# ✅ MIGRATE PAKAI DATABASE_URL DARI RENDER
 CMD ["sh", "-c", "php artisan migrate --force && php-fpm"]
