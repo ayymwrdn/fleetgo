@@ -1,0 +1,60 @@
+# ============================================================
+# LARAVEL DEFAULT
+# ============================================================
+/vendor
+/node_modules
+/public/build
+/public/hot
+/public/storage
+/storage/*.key
+/storage/*.log
+/bootstrap/cache/*.php
+/.phpunit.cache
+/.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+auth.json
+npm-debug.log
+yarn-error.log
+
+# ============================================================
+# ENVIRONMENT FILES (JANGAN PERNAH DI-COMMIT!)
+# ============================================================
+.env
+.env.backup
+.env.production
+.env.local
+.env.testing
+
+# ============================================================
+# IDE & EDITOR
+# ============================================================
+/.fleet
+/.idea
+/.vscode
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# ============================================================
+# COMPOSER & NPM LOCK (Opsional)
+# ============================================================
+# composer.lock  # <-- Uncomment kalau mau commit lock file
+# package-lock.json  # <-- Uncomment kalau mau commit lock file
+
+# ============================================================
+# TESTING
+# ============================================================
+/tests/coverage
+/coverage
+.phpunit.cache
+
+# ============================================================
+# OTHER
+# ============================================================
+*.log
+*.sqlite
+*.sqlite-journal
+.phan
+.phpcs-cache
