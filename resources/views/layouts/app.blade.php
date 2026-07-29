@@ -1,20 +1,12 @@
 @php
-    // Prioritas: query string (klik toggle) > cookie (kunjungan sebelumnya) > default light.
-    // Cookie dipakai supaya pilihan tema TIDAK reset waktu pindah halaman lain
-    // yang link-nya tidak bawa ?theme=... di URL.
-    $theme = request()->get('theme', request()->cookie('theme', 'light'));
+    $theme = request()->get('theme', 'light');
     $isDark = $theme === 'dark';
-
-    if (request()->has('theme')) {
-        cookie()->queue('theme', $theme, 60 * 24 * 365);
-    }
 @endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" @if($isDark) class="dark" @endif>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="{{ $isDark ? '#030712' : '#ffffff' }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'FleetGo - Vehicle Management')</title>
 
@@ -328,24 +320,16 @@
 
         <!-- Flash Messages -->
         @if(session('success'))
-            <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)"
-                 x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-2"
-                 class="mb-4 p-4 rounded-lg bg-emerald-50 dark:bg-emerald-400/10 border border-emerald-200 dark:border-emerald-800/50 text-emerald-800 dark:text-emerald-300 flex items-start justify-between gap-3">
-                <span><i class="fas fa-check-circle mr-2"></i>{{ session('success') }}</span>
-                <button @click="show = false" class="shrink-0 opacity-60 hover:opacity-100 transition-opacity" aria-label="Tutup">
-                    <i class="fas fa-times"></i>
-                </button>
+            <div class="mb-4 p-4 rounded-lg bg-emerald-50 dark:bg-emerald-400/10 border border-emerald-200 dark:border-emerald-800/50 text-emerald-800 dark:text-emerald-300">
+                <i class="fas fa-check-circle mr-2"></i>
+                {{ session('success') }}
             </div>
         @endif
 
         @if(session('error'))
-            <div x-data="{ show: true }" x-show="show"
-                 x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-2"
-                 class="mb-4 p-4 rounded-lg bg-red-50 dark:bg-red-400/10 border border-red-200 dark:border-red-800/50 text-red-800 dark:text-red-300 flex items-start justify-between gap-3">
-                <span><i class="fas fa-exclamation-circle mr-2"></i>{{ session('error') }}</span>
-                <button @click="show = false" class="shrink-0 opacity-60 hover:opacity-100 transition-opacity" aria-label="Tutup">
-                    <i class="fas fa-times"></i>
-                </button>
+            <div class="mb-4 p-4 rounded-lg bg-red-50 dark:bg-red-400/10 border border-red-200 dark:border-red-800/50 text-red-800 dark:text-red-300">
+                <i class="fas fa-exclamation-circle mr-2"></i>
+                {{ session('error') }}
             </div>
         @endif
 
