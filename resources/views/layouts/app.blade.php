@@ -4,15 +4,29 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'FleetGo')</title>
+    <title>@yield('title', 'FleetGo - Vehicle Management')</title>
 
     <!-- FAVICON -->
     <link rel="icon" href="{{ asset('images/fleetgo.png') }}" type="image/png">
 
+    <!-- ============================================================
+         FONT & ICON
+         ============================================================ -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <!-- ============================================================
+         CSS LANGSUNG (Tanpa Vite)
+         ============================================================ -->
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+
+    <!-- ============================================================
+         JS (Alpine & Chart.js)
+         ============================================================ -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ asset('js/app.js') }}" defer></script>
 </head>
 <body class="font-sans antialiased min-h-screen bg-gray-50 dark:bg-gray-900">
 
@@ -32,7 +46,7 @@
                     @endauth
                 </div>
 
-                <!-- Right -->
+                <!-- RIGHT -->
                 <div class="flex items-center gap-3">
 
                     <!-- Theme Toggle -->
@@ -60,7 +74,7 @@
         </div>
     </nav>
 
-    <!-- MAIN -->
+    <!-- MAIN CONTENT -->
     <main class="pt-20 pb-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto animate-fade-in">
 
         @if(session('success'))
@@ -80,9 +94,33 @@
         @yield('content')
     </main>
 
+    <!-- FOOTER -->
     <footer class="text-center py-6 text-sm text-gray-400 dark:text-gray-500 border-t border-gray-200 dark:border-gray-800">
         &copy; {{ date('Y') }} FleetGo. All rights reserved.
     </footer>
+
+    <!-- Theme Toggle Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.getElementById('theme-toggle');
+            const html = document.documentElement;
+
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                html.classList.toggle('dark', savedTheme === 'dark');
+            } else {
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                html.classList.toggle('dark', prefersDark);
+            }
+
+            if (themeToggle) {
+                themeToggle.addEventListener('click', function() {
+                    html.classList.toggle('dark');
+                    localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+                });
+            }
+        });
+    </script>
 
 </body>
 </html>
