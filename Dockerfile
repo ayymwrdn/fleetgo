@@ -3,7 +3,6 @@ FROM php:8.2-fpm
 # Install dependencies
 RUN apt-get update && apt-get install -y \
     git curl libpng-dev libonig-dev libxml2-dev zip unzip libzip-dev libpq-dev \
-    nodejs npm \
     && docker-php-ext-install pdo_mysql pdo_pgsql mbstring exif pcntl bcmath gd zip
 
 # Install Composer
@@ -14,13 +13,21 @@ WORKDIR /app
 # Copy semua file
 COPY . .
 
-# Install dependencies
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader
-RUN npm install && npm run build
-RUN php artisan key:generate
-RUN php artisan optimize
+# ✅ BUAT .env DARI .env.example
+RUN cp .env.example .env
 
-# Set permissions
+# ✅ COMPOSER INSTALL
+RUN composer install --no-interaction --prefer-dist --optimize-autoloader
+
+# ✅ KEY GENERATE (pake env dari Render)
+RUN php artisan key:generate
+
+# ✅ OPTIMIZE
+RUN php artisan config:cache
+RUN php artisan route:cache
+RUN php artisan view:cache
+
+# ✅ SET PERMISSION
 RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache
 RUN chmod -R 775 /app/storage /app/bootstrap/cache
 
