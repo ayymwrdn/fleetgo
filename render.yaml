@@ -1,9 +1,17 @@
 services:
   - type: web
     name: fleetgo
-    runtime: docker
-    repo: https://github.com/username/fleetgo
+    runtime: php
+    region: singapore
     plan: free
+    buildCommand: |
+      composer install --no-interaction --prefer-dist --optimize-autoloader
+      npm install && npm run build
+      php artisan key:generate
+      php artisan optimize
+    startCommand: |
+      php artisan migrate --force
+      php artisan serve --host=0.0.0.0 --port=8000
     envVars:
       - key: APP_ENV
         value: production
@@ -17,15 +25,7 @@ services:
         fromDatabase:
           name: fleetgo-db
           property: connectionString
-    buildCommand: |
-      composer install --no-dev --optimize-autoloader
-      php artisan optimize
-    startCommand: |
-      php artisan migrate --force
-      php artisan serve --host=0.0.0.0 --port=8000
 
 databases:
   - name: fleetgo-db
     plan: free
-    databaseName: fleetgo
-    user: fleetgo_user

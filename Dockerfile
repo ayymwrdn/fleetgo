@@ -14,6 +14,8 @@ RUN apt-get update && apt-get install -y \
     unzip \
     libzip-dev \
     libpq-dev \
+    nodejs \
+    npm \
     && docker-php-ext-install pdo_mysql pdo_pgsql mbstring exif pcntl bcmath gd zip
 
 # Install Composer
@@ -22,20 +24,20 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /app
 
-# Copy composer files first (better caching)
-COPY composer.json composer.lock ./
-
-# Install dependencies
-RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
-
-# Copy remaining files
+# Copy semua file terlebih dahulu (biar artisan ada)
 COPY . .
+
+# Install dependencies (tanpa --no-dev dulu biar bisa jalan)
+RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
 # Generate APP_KEY
 RUN php artisan key:generate
 
 # Optimize Laravel
 RUN php artisan optimize
+
+# Install NPM dependencies dan build asset
+RUN npm install && npm run build
 
 # ============================================================
 # STAGE 2: Runtime
@@ -59,7 +61,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /app
 
-# Copy from builder
+# Copy dari builder
 COPY --from=builder /app /app
 
 # Set permissions
