@@ -25,9 +25,36 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <!-- ============================================================
-         TAILWIND CSS (CDN - No build needed!)
+         TAILWIND CSS (CDN) + CONFIG
+         PENTING: darkMode harus 'class', kalau enggak, class="dark"
+         di <html> nggak akan ngaruh apa-apa ke Tailwind (defaultnya
+         ikut preferensi OS/browser, bukan toggle manual kita).
+         Ini akar masalah kenapa warnanya jadi kacau.
          ============================================================ -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50:  '#ecfdf5',
+                            100: '#d1fae5',
+                            200: '#a7f3d0',
+                            300: '#6ee7b7',
+                            400: '#34d399',
+                            500: '#0b7a3d',
+                            600: '#096b35',
+                            700: '#075a2c',
+                            800: '#064a24',
+                            900: '#053b1d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 
     <!-- ============================================================
          CUSTOM STYLES
@@ -38,9 +65,12 @@
             transition: background-color 0.3s, color 0.3s, border-color 0.3s;
         }
 
-        body {
+        html, body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            @apply bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 antialiased;
+        }
+
+        body {
+            @apply bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 antialiased;
         }
 
         /* Custom Scrollbar */
@@ -49,87 +79,87 @@
             height: 6px;
         }
         ::-webkit-scrollbar-track {
-            @apply bg-gray-100 dark:bg-gray-800 rounded-full;
+            @apply bg-gray-100 dark:bg-gray-900 rounded-full;
         }
         ::-webkit-scrollbar-thumb {
-            @apply bg-green-500 dark:bg-green-400 rounded-full;
+            @apply bg-brand-500 dark:bg-brand-400 rounded-full;
         }
         ::-webkit-scrollbar-thumb:hover {
-            @apply bg-green-600 dark:bg-green-300;
+            @apply bg-brand-600 dark:bg-brand-300;
         }
 
         /* ===== GLASSMORPHISM ===== */
         .glass {
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.6);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.10);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 32px 0 rgba(15, 23, 42, 0.06);
         }
 
-        .glass-dark {
-            background: rgba(11, 122, 61, 0.10);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+        .dark .glass {
+            background: rgba(30, 41, 59, 0.55);
             border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
         }
 
         /* ===== CARDS ===== */
         .card {
-            @apply bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700;
-            @apply hover:shadow-md transition-shadow duration-200;
+            @apply bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800;
+            @apply hover:shadow-md dark:hover:shadow-black/30 transition-shadow duration-200;
         }
 
         .card-glass {
             @apply glass rounded-xl p-6 hover:shadow-xl transition-all duration-300;
-            @apply dark:glass-dark;
         }
 
         /* ===== BUTTONS ===== */
         .btn-primary {
-            @apply px-4 py-2.5 bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600;
-            @apply text-white font-medium rounded-lg;
+            @apply px-4 py-2.5 bg-brand-500 hover:bg-brand-600 dark:bg-brand-400 dark:hover:bg-brand-300;
+            @apply text-white dark:text-gray-900 font-medium rounded-lg;
             @apply transition-all duration-200;
-            @apply focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900;
+            @apply focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 dark:focus:ring-offset-gray-950;
         }
 
         .btn-secondary {
-            @apply px-4 py-2.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600;
+            @apply px-4 py-2.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700;
             @apply text-gray-700 dark:text-gray-200 font-medium rounded-lg;
             @apply transition-all duration-200;
         }
 
         .btn-success {
-            @apply px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white font-medium rounded-lg;
+            @apply px-4 py-2 bg-emerald-500 hover:bg-emerald-600 dark:bg-emerald-500 dark:hover:bg-emerald-400;
+            @apply text-white font-medium rounded-lg;
             @apply transition-all duration-200;
         }
 
         .btn-danger {
-            @apply px-4 py-2 bg-red-500 hover:bg-red-600 text-white font-medium rounded-lg;
+            @apply px-4 py-2 bg-red-500 hover:bg-red-600 dark:bg-red-500 dark:hover:bg-red-400;
+            @apply text-white font-medium rounded-lg;
             @apply transition-all duration-200;
         }
 
         .btn-outline {
-            @apply px-4 py-2.5 border border-gray-300 dark:border-gray-600;
+            @apply px-4 py-2.5 border border-gray-300 dark:border-gray-700;
             @apply text-gray-700 dark:text-gray-300 font-medium rounded-lg;
-            @apply hover:bg-gray-50 dark:hover:bg-gray-700;
+            @apply hover:bg-gray-50 dark:hover:bg-gray-800;
             @apply transition-all duration-200;
         }
 
         /* ===== INPUTS ===== */
         .input {
-            @apply w-full px-4 py-2.5 bg-white dark:bg-gray-800;
-            @apply border border-gray-300 dark:border-gray-600 rounded-lg;
-            @apply text-gray-900 dark:text-gray-100;
-            @apply focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent;
+            @apply w-full px-4 py-2.5 bg-white dark:bg-gray-900;
+            @apply border border-gray-300 dark:border-gray-700 rounded-lg;
+            @apply text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500;
+            @apply focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent;
             @apply transition-all duration-200;
         }
 
         .input-dark {
-            @apply w-full px-4 py-2.5 bg-gray-800/50 dark:bg-gray-700/50;
+            @apply w-full px-4 py-2.5 bg-gray-800/60 dark:bg-gray-800/60;
             @apply border border-gray-600/50 dark:border-gray-600 rounded-lg;
             @apply text-gray-100 placeholder-gray-400;
-            @apply focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent;
+            @apply focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent;
             @apply transition-all duration-200;
         }
 
@@ -138,36 +168,36 @@
             @apply px-2.5 py-0.5 rounded-full text-xs font-medium;
         }
         .badge-pending-l1 {
-            @apply bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300;
+            @apply bg-yellow-100 text-yellow-800 dark:bg-yellow-400/15 dark:text-yellow-300;
         }
         .badge-pending-l2 {
-            @apply bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300;
+            @apply bg-orange-100 text-orange-800 dark:bg-orange-400/15 dark:text-orange-300;
         }
         .badge-approved {
-            @apply bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300;
+            @apply bg-emerald-100 text-emerald-800 dark:bg-emerald-400/15 dark:text-emerald-300;
         }
         .badge-rejected {
-            @apply bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300;
+            @apply bg-red-100 text-red-800 dark:bg-red-400/15 dark:text-red-300;
         }
         .badge-completed {
-            @apply bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300;
+            @apply bg-blue-100 text-blue-800 dark:bg-blue-400/15 dark:text-blue-300;
         }
 
         /* ===== STATS ICON ===== */
         .stat-icon {
             @apply w-12 h-12 rounded-lg flex items-center justify-center;
-            @apply bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400;
+            @apply bg-brand-50 dark:bg-brand-400/10 text-brand-600 dark:text-brand-300;
         }
 
         /* ===== NAV LINKS ===== */
         .nav-link {
             @apply px-3 py-2 rounded-lg text-sm font-medium;
             @apply text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white;
-            @apply hover:bg-gray-100 dark:hover:bg-gray-700;
+            @apply hover:bg-gray-100 dark:hover:bg-gray-800;
             @apply transition-all duration-200;
         }
         .nav-link-active {
-            @apply bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400;
+            @apply bg-brand-50 dark:bg-brand-400/10 text-brand-600 dark:text-brand-300;
         }
 
         /* ===== ANIMATIONS ===== */
@@ -192,10 +222,10 @@
 
         @keyframes pulseGlow {
             0%, 100% {
-                box-shadow: 0 0 20px rgba(11, 122, 61, 0.2);
+                box-shadow: 0 0 20px rgba(11, 122, 61, 0.25);
             }
             50% {
-                box-shadow: 0 0 40px rgba(11, 122, 61, 0.4);
+                box-shadow: 0 0 40px rgba(11, 122, 61, 0.45);
             }
         }
 
@@ -209,13 +239,13 @@
             width: 4px;
         }
         .custom-scroll::-webkit-scrollbar-track {
-            @apply bg-gray-100 dark:bg-gray-800 rounded-full;
+            @apply bg-gray-100 dark:bg-gray-900 rounded-full;
         }
         .custom-scroll::-webkit-scrollbar-thumb {
-            @apply bg-green-500 dark:bg-green-400 rounded-full;
+            @apply bg-brand-500 dark:bg-brand-400 rounded-full;
         }
         .custom-scroll::-webkit-scrollbar-thumb:hover {
-            @apply bg-green-600 dark:bg-green-300;
+            @apply bg-brand-600 dark:bg-brand-300;
         }
     </style>
 
@@ -230,12 +260,12 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
-<body class="font-sans antialiased min-h-screen bg-gray-50 {{ $isDark ? 'dark:bg-gray-900' : '' }} text-gray-900 {{ $isDark ? 'dark:text-gray-100' : '' }}">
+<body class="font-sans antialiased min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100">
 
     <!-- ============================================================
          NAVBAR
          ============================================================ -->
-    <nav class="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800">
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-gray-950/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
 
@@ -244,7 +274,7 @@
                     <img src="{{ asset('images/fleetgo.png') }}" alt="FleetGo" class="h-8 w-auto">
                     <span class="text-xl font-bold text-gray-900 dark:text-white">FleetGo</span>
                     @auth
-                        <span class="ml-2 text-xs px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
+                        <span class="ml-2 text-xs px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300">
                             {{ auth()->user()->isAdmin() ? 'Admin' : 'Approver' }}
                         </span>
                     @endauth
@@ -253,15 +283,18 @@
                 <!-- RIGHT SIDE -->
                 <div class="flex items-center gap-3">
 
-                    <!-- ============================================================
-                         THEME TOGGLE - PAKAI LINK (PASTI JALAN!)
-                         ============================================================ -->
-                    <div class="flex gap-1">
-                        <a href="?theme=light" class="px-3 py-1 text-sm rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition {{ !$isDark ? 'ring-2 ring-green-500' : '' }}">
-                            ☀️ Light
+                    <!-- THEME TOGGLE -->
+                    <div class="relative flex items-center p-1 rounded-full bg-gray-200 dark:bg-gray-800 border border-gray-300/60 dark:border-gray-700">
+                        <!-- Sliding indicator -->
+                        <span class="absolute top-1 bottom-1 w-8 rounded-full bg-white dark:bg-gray-950 shadow-sm transition-all duration-300 ease-out {{ $isDark ? 'translate-x-8' : 'translate-x-0' }}"></span>
+
+                        <a href="?theme=light" aria-label="Light mode"
+                           class="relative z-10 w-8 h-8 flex items-center justify-center rounded-full transition-colors duration-200 {{ !$isDark ? 'text-gray-900 dark:text-white' : 'text-gray-400 dark:text-gray-500' }}">
+                            <i class="fas fa-sun text-sm"></i>
                         </a>
-                        <a href="?theme=dark" class="px-3 py-1 text-sm rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition {{ $isDark ? 'ring-2 ring-green-500' : '' }}">
-                            🌙 Dark
+                        <a href="?theme=dark" aria-label="Dark mode"
+                           class="relative z-10 w-8 h-8 flex items-center justify-center rounded-full transition-colors duration-200 {{ $isDark ? 'text-gray-900 dark:text-white' : 'text-gray-400 dark:text-gray-500' }}">
+                            <i class="fas fa-moon text-sm"></i>
                         </a>
                     </div>
 
@@ -287,14 +320,14 @@
 
         <!-- Flash Messages -->
         @if(session('success'))
-            <div class="mb-4 p-4 rounded-lg bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 text-green-800 dark:text-green-300">
+            <div class="mb-4 p-4 rounded-lg bg-emerald-50 dark:bg-emerald-400/10 border border-emerald-200 dark:border-emerald-800/50 text-emerald-800 dark:text-emerald-300">
                 <i class="fas fa-check-circle mr-2"></i>
                 {{ session('success') }}
             </div>
         @endif
 
         @if(session('error'))
-            <div class="mb-4 p-4 rounded-lg bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-800 dark:text-red-300">
+            <div class="mb-4 p-4 rounded-lg bg-red-50 dark:bg-red-400/10 border border-red-200 dark:border-red-800/50 text-red-800 dark:text-red-300">
                 <i class="fas fa-exclamation-circle mr-2"></i>
                 {{ session('error') }}
             </div>
